@@ -1,0 +1,18 @@
+int main()
+{
+	PNode Head = NULL, NewNode, p;
+	const int N = 5;
+	int i, k, fl, m;
+	char word[40], c;
+	SetConsoleOutputCP(1251);
+	SetConsoleCP(1251);
+	printf("На каком языке исходный текст?(0 - русский, 1 - английский)");
+	scanf("%d", &fl);
+	printf("Начиная с какого количества слов начинать выводить частотный словарь?");
+	scanf("%d", &m);
+	Cleaner("in.txt", fl);
+	k = CountWord("out_buf.txt");
+	Head = File2List("out_buf.txt", k);
+	List2File("out1.txt", Head, m);
+	return 0;
+}

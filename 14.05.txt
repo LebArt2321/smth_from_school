@@ -1,0 +1,36 @@
+#include <iostream>
+using namespace std;
+//2
+/*int main(){
+	int n, max1=-200007, max2=-200007, maxs=-400007;
+	cin >> n;
+	int *a = new int [n];
+	for (int i=0; i<n; i++)
+		cin >> a[i];
+	for (int i=0; i<n; i++){
+		for (int j=i+1; j<n; j++){
+			if (a[i]>a[j] && maxs<a[i]+a[j] && (a[i]+a[j])%120==0){
+				maxs=a[i]+a[j];
+				max1=a[i];
+				max2=a[j];
+			}
+		}
+	}
+	cout << max1 << " " << max2;
+	}*/
+//4
+int main(){
+	int a[120]={0}, n, x, otv1, otv2, maxs=-1;
+	cin >> n;
+	for (int i=0; i<n; i++){
+		cin >> x;
+		if (x<a[(120-x%120)%120] && maxs < x+a[(120-x%120)%120]){
+			otv2 = x;
+			maxs=x+a[(120-x%120)%120];
+			otv1 = a[(120-x%120)%120];
+		}
+		if (x>a[x%120])
+			a[x%120] = x;
+	}
+	cout << otv1 << " " << otv2;
+}

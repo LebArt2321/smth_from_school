@@ -1,0 +1,26 @@
+#include<iostream>
+#include <ctime>
+#include <cstdlib>
+using namespace std;
+double func1(double x)
+{
+return x * x;
+}
+double func2(double x)
+{
+return 0;
+}
+int main(){
+	int cnt = 0, cnn = 0;
+	srand(time(NULL));
+	for(int i = 0; i < 1000000; i++)
+	{
+		double x = (double)rand()/RAND_MAX/1;
+		double y = (double)rand()/RAND_MAX/1;
+
+			//cout << x << " ";
+		if(y > func2(x) && y < func1(x)) cnt++;
+		cnn++;
+	}
+	cout << (double)cnt/cnn << endl;
+}

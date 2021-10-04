@@ -1,0 +1,64 @@
+#include <iostream>
+#include <fstream>
+#include <queue> 
+using namespace std;
+
+//структура "точка"
+typedef struct {
+	int x, y, cnt;
+} TPoint;
+//очередь точек
+queue <TPoint> Q;
+//точка
+TPoint Point(int x, int y, int cnt) {
+	TPoint P;
+	P.x = x;
+	P.y = y;
+	P.cnt = cnt;
+	return P;
+}
+
+int main() {
+	
+	queue <TPoint> Q; // очередь 
+	ifstream fin("in.txt");
+	setlocale(LC_ALL, "rus");
+	int n, m, x, y, cnt, ey, ex;
+	fin >> n >> m;
+	int **A = new int*[m];
+	for (int i = 0; i<m; i++)
+	{
+		A[i] = new int[n];
+		for (int j = 0; j<n; j++)
+			fin >> A[i][j];
+	}
+	for (int i = 0; i < m; i++){
+		for (int j = 0; j < n; j++)
+			cout << A[i][j] << " ";
+		cout << endl;
+	}
+	cin >> y >> x;
+	cin >> ey >> ex;
+	TPoint pt;
+	Q.push(Point(x, y, 0));
+	while (!Q.empty()) {
+		pt = Q.front();
+		x = pt.x;
+		y = pt.y;
+		cnt = pt.cnt;
+		A[y][x] = cnt + 1;
+		Q.pop();
+		
+		if (A[y + 1][x] == 0) { Q.push(Point(x, y + 1, cnt + 1)); if (ey == y + 1 && ex == x) { A[ey][ex] = cnt + 2; break; } }
+		if (A[y - 1][x] == 0) { Q.push(Point(x, y - 1, cnt + 1)); if (ey == y - 1 && ex == x) { A[ey][ex] = cnt + 2; break; } }
+		if (A[y][x + 1] == 0) { Q.push(Point(x + 1, y, cnt + 1)); if (ey == y && ex == x + 1) { A[ey][ex] = cnt + 2; break; } }
+		if (A[y][x - 1] == 0) { Q.push(Point(x - 1, y, cnt + 1)); if (ey == y && ex == x - 1) { A[ey][ex] = cnt + 2; break; } }
+	}
+	for (int i = 0; i < m; i++){
+		for (int j = 0; j < n; j++)
+			cout << A[i][j] << " ";
+		cout << endl;
+	}
+	cout << "Количество ходов нужное для достижения точки = " << A[ey][ex] - 1;
+	return 0;
+}

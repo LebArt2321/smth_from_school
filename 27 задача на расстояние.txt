@@ -1,0 +1,46 @@
+#include<iostream>
+using namespace std;
+int main(){
+	int a[6], x, n, d1=0, d2=0, d3=0, cnt=0;
+	cin >> n;
+	for (int i=0; i<6; i++)
+		cin >> a[i];
+	for (int i=6; i<n; i++){
+		cin >> x;
+		if (a[0]%3==1) d1++;
+		if (a[0]%3==2) d2++;
+		if (a[0]%3==0) d3++;
+		if (x%3==1) cnt+=d2;
+		if (x%3==2) cnt+=d1;
+		if (x%3==0) cnt+=d3;
+		for (int j = 0; j<5; j++)
+			a[j] = a[j+1];
+		a[5]=x;
+	}
+	cout << cnt;
+}
+
+#include<iostream>
+using namespace std;
+int main(){
+	static int a[10], otv, d1, d2, d5, d10;
+	int n, x;
+	cin >> n;
+	for (int i=0; i<10; i++)
+		cin >> a[i];
+	for (int i=10; i<n; i++){
+		cin >> x;
+		if (a[0]%10==0) d10++;
+		else if (a[0]%2==0) d2++;
+		else if (a[0]%5==0) d5++;
+		else d1++;
+		if (x%10==0) otv+=d1+d5+d2+d10;
+		else if (x%5==0) otv+=d2+d10;
+		else if (x%2==0) otv+=d5+d10;
+		else otv+=d10;
+		for (int j=0; j<9; j++)
+			a[j]=a[j+1];
+		a[9]=x;
+	}
+	cout << otv;
+}

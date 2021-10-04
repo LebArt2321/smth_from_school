@@ -1,0 +1,71 @@
+#include<iostream>
+#include<string>
+using namespace std;
+//int main(){
+//	int x, a[5], min=200007, sum=200007, n;
+//	cin >> n;
+//	for (int i = 0; i<5; i++)
+//		cin >> a[i];
+//	for (int i=5; i<n; i++){
+//		cin >> x;
+//		if ((a[i%5]*a[i%5])<min)
+//			min = (a[i%5]*a[i%5]);
+//		if ((x*x+min)<sum)
+//			sum = x*x+min;
+//		a[i%5]=x;
+//	}
+//	cout << sum;
+//}
+//
+//int main(){
+//	int x, a[9], max=-200007, mn=-200007, n;
+//	cin >> n;
+//	for (int i=0; i<9; i++)
+//		cin >> a[i];
+//	for (int i=9; i<n; i++){
+//		cin >> x;
+//		if (a[i%9] > max)
+//			max = a[i%9];
+//		if (((x*max)>mn) && (x*max)%2==0)
+//			mn = x*max;
+//		a[i%9]=x;
+//	}
+//	if (mn%2==0)
+//		cout << mn;
+//	else cout << -1;
+//}
+//int main(){
+//	int x, n, a[4], min=200007, sum=200007;
+//	cin >> n;
+//	for (int i=0 ;i<4; i++)
+//		cin >> a[i];
+//	for (int i=4; i<n; i++){
+//		cin >> x;
+//		if (a[i%4]<min)
+//			min=a[i%4];
+//		if ((min+x)<sum)
+//		sum = min+x;
+//		a[i%4]=x;
+//	}
+//		cout << sum;
+//}
+
+
+
+int main(){
+	int x, a[6], min=200007, pr=200007, n;
+	cin >> n;
+	for (int i=0; i<6; i++)
+		cin >> a[i];
+	for (int i=6; i<n; i++){
+		cin >> x;
+		if (a[i%6]<min)
+			min=a[i%6];
+		if ((min*x)<pr && (min*x)%2==1)
+			pr = min*x;
+		a[i%6]=x;
+	}
+	if (pr%2==0)
+		cout << -1;
+	else cout << pr;
+}

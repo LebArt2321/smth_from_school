@@ -1,0 +1,205 @@
+PNode CreateNode(char *NewWord)//Создание нового узла
+{
+	PNode NewNode;
+	NewNode = (PNode)malloc(sizeof(Node));
+	strcpy(NewNode->word, NewWord);
+	NewNode->cnt = 1;
+	NewNode->next = NULL;
+	return NewNode;
+}
+void AddFirst(PNode &Head, PNode NewNode)//Добавление узла в начало списка
+{
+	NewNode->next = Head;
+	Head = NewNode;
+}
+void AddLast(PNode &Head, PNode NewNode)//Добавление узла в конец списка
+{
+	PNode p = Head;
+	if (Head == NULL) {
+		AddFirst(Head, NewNode);
+		return;
+	}
+	while (p->next != NULL)
+		p = p->next;
+	p->next = NewNode;
+}
+void AddAfter(PNode p, PNode NewNode)//Добавление после заданного
+{
+	NewNode->next = p->next;
+	p->next = NewNode;
+}
+void AddBefore(PNode &Head, PNode p, PNode NewNode)//Добавление перед заданным
+{
+	PNode q = Head;
+	if (q == p){
+		AddFirst(Head, NewNode);
+		return;
+	}
+	while (q && q->next != p)
+		q = q->next;
+	if (q)
+		AddAfter(q, NewNode);
+}
+void AddBefore2(PNode p, PNode NewNode)//Добавление перед заданным 2
+{
+	Node temp;
+	temp = *p;
+	*p = *NewNode;
+	*NewNode = temp;
+	p->next = NewNode;
+}
+void PrintList(PNode Head)//Печать списка на экран
+{
+	PNode p = Head;
+	while (p != NULL) {
+		printf("%s %d\n", p->word, p->cnt);
+		p = p->next;
+	}
+}
+
+PNode Find(PNode Head, char* word) // Поиск узла в списке
+{
+	PNode p = Head;
+	while (p && strcmp(p->word, word))
+		p = p->next;
+	return p;
+}
+
+PNode FindPlace(PNode Head, char* word) // Поиск места для вставки
+{
+	PNode p = Head;
+	while (p && (strcmp(p->word, word) < 0))
+		p = p->next;
+	return p;
+}
+
+void DeleteNode(PNode &Head, PNode p) // Удаление узла
+{
+	PNode q = Head;
+	if (Head == p)
+		Head = p->next;
+	else
+	{
+		while (q && q->next != p)
+			q = q->next;
+		if (!q) return;
+		q->next = p->next;
+	}
+	free(p);
+}
+int ListSize(PNode Head)
+{
+	int cnt = 0;
+	PNode p = Head;
+	while (p)
+	{
+		cnt++;
+		p = p->next;
+	}
+	return cnt;
+}
+void List2File(char* fileName, PNode Head, int need)
+{
+	std::ofstream fout(fileName);
+	PNode p = Head;
+	int sum = 0, i, temp;
+	while (p)
+	{
+		sum++;
+		p = p->next;
+	}
+	int *A = new int[sum];
+	p = Head;
+	std::string *v = new std::string[sum], tep;
+
+	for (i = 0; i < sum; i++)
+	{
+		v[i] = p->word;
+		A[i] = p->cnt;
+		p = p->next;
+	}
+	for (int i = 0; i < sum - 1; i++) {
+		for (int j = 0; j < sum - i - 1; j++) {
+			if (A[j] < A[j + 1]) {
+				temp = A[j];
+				tep = v[j];
+				v[j] = v[j + 1];
+				A[j] = A[j + 1];
+				A[j + 1] = temp;
+				v[j + 1] = tep;
+			}
+		}
+	}
+	for (i = 0; i < sum; i++)
+	{	
+		if (A[i] >= need)
+		fout << v[i] << " " << A[i] << std::endl;
+	}
+}
+PNode File2List(char * FileName, int n)
+{
+	int count, i = 0;
+	char word[40];
+	PNode Head = NULL, NewNode, p;
+	FILE *f = fopen(FileName, "r");
+	for (i = 0; i < n; i++)
+	{
+		fscanf(f, "%s", word);
+		NewNode = CreateNode(word);
+		p = Find(Head, word);
+		if (p)
+			p->cnt++;
+		else
+		{
+			p = FindPlace(Head, word);
+			AddBefore(Head, p, NewNode);
+		}
+	}
+	fclose(f);
+	return Head;
+}
+void Cleaner(char *filename, int lan)
+{
+	char c, p;
+	FILE *f = fopen(filename, "r"), *fo = fopen("out_buf.txt", "w");
+	int i = 0;
+	while (fscanf(f, "%c", &c) != EOF){
+		if (lan == 1){
+			if (c >= 'A' && c <= 'Z')
+				c = abs('A' - 'a') + c;
+			else if (c >= 'a' && c <= 'z');
+			else c = ' ';
+		}
+		else if (lan == 0)
+		{
+			if (c >= 'А' && c <= 'Я')
+				c = (c - 'а');
+			else if (c >= 'а' && c <= 'я');
+			else c = ' ';
+		}
+		fprintf(fo, "%c", c);
+	}
+	fclose(f);
+	fclose(fo);
+
+}
+int CountWord(char *filename)
+{
+	int sum = 0;
+	char s[80];
+	FILE *f = fopen(filename, "r");
+	while (fscanf(f, "%s", s) != EOF)
+		sum++;
+	return sum;
+}
+int CountWordLast(PNode Head)
+{
+	int sum = 0;
+	PNode p = Head;
+	while (p)
+	{
+		sum++;
+		p = p->next;
+	}
+	return sum;
+}

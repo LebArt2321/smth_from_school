@@ -1,0 +1,30 @@
+#include <iostream>
+#include <cmath>
+using namespace std;
+
+int main () {
+	setlocale(LC_ALL, "Russian");
+	double t = 0, v, y, a, F, r, m, h = 0;
+	double ro = 1.23;
+	double g = 9.8;
+	double delta = 0.01;
+	double C = 0.4;
+	cout << "¬ведите радиус м€ча, его массу, начальные скорость и координату: " << endl;
+	cin >> r >> m >> v >> y;
+	double S = r*r*3.14;
+	double k = ro*C*S/2;
+	while (y>=0) {
+		if (y > h) 
+			h = y;
+		F = -k*abs(v)*v;
+		a = -g + F/m;
+		y = y + v*delta + a*delta*delta/2;
+		v = v + a*delta;
+		t = t + delta;
+	}
+	cout << "ћаксимальна€ высота подъЄма м€ча:" << h << endl;
+	cout << "¬рем€ полЄта:" << t << endl;
+	cout << "—корость в момент приземлени€:" << v << endl;
+	return 0;
+
+}

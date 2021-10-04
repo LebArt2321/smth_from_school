@@ -1,0 +1,25 @@
+void Cleaner(char *filename, int lan)
+{
+	char c, p;
+	FILE *f = fopen(filename, "r"), *fo = fopen("out_buf.txt", "w");
+	int i = 0;
+	while (fscanf(f, "%c", &c) != EOF){
+		if (lan == 1){
+			if (c >= 'A' && c <= 'Z')
+				c = abs('A' - 'a') + c;
+			else if (c >= 'a' && c <= 'z');
+			else c = ' ';
+		}
+		else if (lan == 0)
+		{
+			if (c >= 'А' && c <= 'Я')
+				c = (c - 'а');
+			else if (c >= 'а' && c <= 'я');
+			else c = ' ';
+		}
+		fprintf(fo, "%c", c);
+	}
+	fclose(f);
+	fclose(fo);
+
+}

@@ -1,0 +1,122 @@
+#include <iostream>
+#include <queue> 
+using namespace std;
+
+typedef int *pInt;
+
+//структура "точка"
+typedef struct {
+	int x, y;
+} TPoint;
+
+//очередь точек
+queue <TPoint> Q;
+
+//точка
+TPoint Point(int x, int y) {
+	TPoint P;      
+	P.x = x; 
+	P.y = y;
+	return P;
+}
+
+//ввод матрицы
+void fullMatrix (pInt A[], int n, int m);
+//вывод матрицы
+void printMatrix (pInt A[], int n, int m);
+
+int main () {
+	setlocale (LC_ALL, "Russian");
+
+	pInt *A;
+	int n, m;
+
+	cout << "¬ведите размеры пол€: ";
+	cin >> n >> m;
+	cout << endl;
+
+	//выделение пам€ти дл€ матрицы
+	A = new pInt[n];
+	for (int i = 0; i < n; i++)
+		A[i] = new int[m];
+
+	//ввод матрицы
+	cout << "¬ведите матрицу (1 - стена, 0 - дорога): " << endl;
+	fullMatrix (A, n, m);
+	cout << endl;
+
+	queue <TPoint> Q; // очередь 
+	TPoint pt;
+	int len = 2; // длина пути
+
+	int x0, y0; //начальна€ точка
+	cout << "¬ведите координаты начальной точки: ";
+	cin >> x0 >> y0;
+	cout << endl;
+
+	int xend, yend; //конечна€ точка
+	cout << "¬ведите координаты конечной точки: ";
+	cin >> xend >> yend;
+	cout << endl;
+ 
+	Q.push (Point(x0, y0));
+	A[x0][y0] = 1;
+
+	while (xend == pt.x && yend == pt.y) {
+		pt = Q.front(); Q.pop();
+		if (xend == pt.x && yend == pt.y)
+			break;
+		else {
+			if (pt.x > 0 && A[pt.x-1][pt.y] == 0) {
+				Q.push (Point(pt.x-1, pt.y));
+				A[pt.x-1][pt.y] = len;
+			}
+			if (pt.y > 0 && A[pt.x][pt.y-1] == 0) {
+				Q.push (Point(pt.x, pt.y-1));
+				A[pt.x][pt.y-1] = len;
+			}
+			if (pt.x < n-1 && A[pt.x+1][pt.y] == 0) {
+				Q.push(Point(pt.x+1, pt.y));
+				A[pt.x+1][pt.y] = len;
+			}
+			if (pt.y < m-1 && A[pt.x][pt.y+1] == 0) {
+				Q.push(Point(pt.x, pt.y+1));
+				A[pt.x][pt.y+1] = len;
+			}
+			len++;
+		}
+	}
+
+	if(xend == x0 && yend == y0) {
+		len = 0;
+	}
+
+	cout << " ратчайша€ длина пути: " << len << endl;
+	//вывод матрицы
+	printMatrix (A, n, m);
+
+	//удаление
+	for (int i = 0; i < n; i++)
+		delete [] A[i];
+	delete [] A;              
+	return 0;
+}
+
+//ввод матрицы
+void fullMatrix (pInt A[], int n, int m) {
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < m; j++) { 
+			cin >> A[i][j];
+		}
+	}
+}
+
+//вывод матрицы
+void printMatrix (pInt A[], int n, int m) {
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < m; j++) { 
+			cout << A[i][j] << " ";
+		}
+		cout << endl;
+	}
+}

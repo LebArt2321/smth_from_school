@@ -1,0 +1,37 @@
+#include <iostream>
+#include <stack>
+#include <string>
+using namespace std;
+
+int main() {
+	setlocale(LC_ALL, "Russian");
+	const string L = "([{", //открывающие
+		R = ")]}"; //закрывающие
+	string str; //рабочая строка 
+	stack <char> S; //стек
+	bool err = false; //ошибка
+	int i, p;
+	char c;
+	cin >> str;
+	for (i = 0; i < str.size(); i++) {
+		p = L.find (str[i]);
+		if (p >= 0)
+			S.push (str[i]);
+		p = R.find (str[i]);
+		if (p >= 0) {
+			if (S.empty ())
+				err = true;
+			else {
+				c = S.top(); S.pop();
+				if (p!= L.find(c))
+					err = true;
+			}
+			if (err) break;
+		}
+	}
+	if (err == false)
+		cout << "Скобки расставлены верно";
+	else
+		cout << "Скобки расставлены неверно";
+	return 0;
+}

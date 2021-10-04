@@ -1,0 +1,30 @@
+#include<iostream>
+using namespace std;
+int main(){
+	int n, cnt=0, x, d1chet=0, d3chet=0, d1nechet=0, d3nechet=0;
+	cin >> n;
+	for (int i=0; i<n; i++){
+		cin >> x;
+		if (x%2==0){
+			if (x%3==0){
+				cnt+=d1nechet+d3nechet;
+				d3chet++;
+			}
+			else {
+				cnt+=d3nechet;
+				d1chet++;
+			}
+		}
+		else {
+			if (x%3==0){
+				cnt+=d1chet+d3chet;
+				d3nechet++;
+			}
+			else {
+				cnt+=d3chet;
+				d1nechet++;
+			}
+		}
+	}
+		cout << cnt;
+}

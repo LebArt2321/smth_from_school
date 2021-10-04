@@ -1,0 +1,76 @@
+#include <iostream>
+#include <queue> 
+using namespace std;
+
+//структура "точка"
+typedef struct {
+	int x, y;
+} TPoint;
+//очередь точек
+queue <TPoint> Q;
+//точка
+TPoint Point(int x, int y) {
+	TPoint P;      
+	P.x = x; 
+	P.y = y;
+	return P;
+}
+
+typedef int *pInt;
+
+//ввод матрицы
+void fullMatrix (pInt A[], int n, int m);
+
+//вывод матрицы
+void printMatrix (pInt A[], int n, int m);
+
+int main () {
+	pInt *A;
+	const int XMAX = 5, YMAX = 5, NEW_COLOR = 2;
+	A = new pInt[YMAX]; //матрица
+	for (int i = 0; i < YMAX; i++)
+		A[i] = new int[XMAX];
+	queue <TPoint> Q; // очередь 
+	int i, j, x0, y0, color;
+	TPoint pt;
+	fullMatrix (A, XMAX, YMAX); //заполнение матрицы 
+	y0 = 0; x0 = 1; //координаты начала заливки
+	color = A[y0][x0]; //цвет начальной точки   
+	Q.push (Point(x0,y0));
+	while (! Q.empty()) {
+		pt = Q.front(); Q.pop();
+		if (A[pt.y][pt.x] == color ) {
+			A[pt.y][pt.x] = NEW_COLOR;
+			if (pt.x > 0) 
+				Q.push ( Point(pt.x-1,pt.y) );
+			if (pt.y > 0) 
+				Q.push ( Point(pt.x,pt.y-1) );
+			if (pt.x < XMAX-1) 
+				Q.push( Point(pt.x+1,pt.y) );
+			if (pt.y < YMAX-1) 
+				Q.push( Point(pt.x,pt.y+1) );
+		}
+	}
+	cout << endl;
+	printMatrix (A, YMAX, XMAX);
+	return 0;
+}
+
+//ввод матрицы
+void fullMatrix (pInt A[], int n, int m) {
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < m; j++) { 
+			cin >> A[i][j];
+		}
+	}
+}
+
+//вывод матрицы
+void printMatrix (pInt A[], int n, int m) {
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < m; j++) { 
+			cout << A[i][j] << " ";
+		}
+		cout << endl;
+	}
+}
